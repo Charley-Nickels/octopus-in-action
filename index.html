@@ -1,105 +1,81 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Octopus In Action v1.1.1 (Hotfix)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Octopus In Action — Alpha v1.150</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div id="hud">
-    <div class="hud-group">
-      <span class="hud-label">Day</span><span id="hud-day">1</span>
-      <span class="hud-label">Time</span><span id="hud-time">09:00</span>
+  <div id="game-root">
+    <div class="titlebar">
+      <div class="brand">
+        <span class="logo-circle"></span>
+        <span class="logo-text">Atlas Forge Interactive</span>
+      </div>
+      <div class="build">Octopus In Action — <strong>Alpha v1.150</strong></div>
     </div>
-    <div class="hud-group">
-      <span class="icon coin"></span><span id="hud-money">250</span>
-      <span class="icon star"></span><span id="hud-level">1</span>
-      <button id="btn-speed" class="btn">Speed ×1</button>
-      <button id="btn-pause" class="btn warn">Pause</button>
-      <button id="btn-help" class="btn">Controls</button>
+
+    <div id="hud" class="hud">
+      <div class="hud-item">Day: <span id="hud-day">1</span></div>
+      <div class="hud-item">Time: <span id="hud-time">09:00</span></div>
+      <div class="hud-item">Budget: $<span id="hud-budget">1000</span></div>
+      <div class="hud-item">Sat: <span id="hud-sat">50</span>%</div>
+      <div class="hud-item">Mode: <span id="hud-mode">Story</span></div>
+      <button id="btn-sandbox" class="btn">Sandbox</button>
+      <button id="btn-pause" class="btn">Pause</button>
+      <button id="btn-mail" class="btn mail-btn" title="Mailbox">
+        <img src="assets/ui/mail_icon_cc0.png" alt="mail"/>
+        <span id="mail-badge" class="badge">0</span>
+      </button>
     </div>
-  </div>
 
-  <div id="toolbar">
-    <button id="btn-mailbox" class="btn">Mailbox</button>
-    <button id="btn-build" class="btn">Build</button>
-    <button id="btn-report" class="btn">Export Report</button>
-  </div>
+    <canvas id="scene" width="640" height="384"></canvas>
 
-  <div id="game-wrap">
-    <canvas id="game" width="960" height="640"></canvas>
-    <div id="toast"></div>
-    <div id="interact-hint">E: Interact</div>
-  </div>
-
-  <dialog id="contact-card" class="window">
-    <div class="window-title">Citizen License</div>
-    <div class="license">
-      <div class="portrait"><canvas id="license-portrait" width="48" height="48"></canvas></div>
-      <div class="fields">
-        <div><b>Name:</b> <span id="cc-name"></span></div>
-        <div><b>Race:</b> <span id="cc-race"></span> <span class="legend" id="cc-race-legend"></span></div>
-        <div><b>Age:</b> <span id="cc-age"></span></div>
-        <div><b>Address:</b> <span id="cc-address"></span></div>
-        <div><b>Job:</b> <span id="cc-job"></span></div>
+    <div id="dialog" class="panel hidden">
+      <div class="dialog-text" id="dialog-text">…</div>
+      <div class="dialog-actions">
+        <button class="btn" data-action="accept">Accept</button>
+        <button class="btn" data-action="reject">Dismiss</button>
+        <button class="btn" data-action="card">Contact Card</button>
       </div>
     </div>
-    <div class="window-footer">
-      <button class="btn" id="cc-close">Close</button>
-    </div>
-  </dialog>
 
-  <dialog id="talk" class="window">
-    <div class="window-title">Conversation</div>
-    <div class="dialog-body" id="talk-body"></div>
-    <div class="window-footer">
-      <button class="btn" id="talk-close">Close</button>
+    <div id="mailbox" class="panel hidden">
+      <div class="panel-title">Mailbox</div>
+      <div class="mail-list" id="mail-list"></div>
+      <div class="panel-actions">
+        <button id="mail-close" class="btn">Close</button>
+      </div>
     </div>
-  </dialog>
 
-  <dialog id="shop" class="window">
-    <div class="window-title">OctoMart</div>
-    <div id="shop-list" class="shop-list"></div>
-    <div class="window-footer">
-      <button class="btn" id="shop-close">Close</button>
+    <div id="menu" class="overlay hidden">
+      <div class="menu-panel">
+        <h2>Paused</h2>
+        <button id="menu-continue" class="btn">Continue</button>
+        <button id="menu-credits" class="btn">Credits</button>
+        <button id="menu-restart" class="btn">Restart Day</button>
+      </div>
     </div>
-  </dialog>
 
-  <dialog id="mailbox" class="window">
-    <div class="window-title">Mailbox</div>
-    <div id="mailbox-list" class="mail-list"></div>
-    <div class="window-footer">
-      <button class="btn" id="mailbox-close">Close</button>
+    <div id="credits" class="overlay hidden">
+      <div class="credits-roll">
+        <h1>Octopus In Action</h1>
+        <p>© 2025 Atlas Forge Interactive (“Our Studio”)</p>
+        <h3>Game Design & Code</h3>
+        <p>Project: Octopus In Action — HTML5 build</p>
+        <h3>Art</h3>
+        <p>Mayor Octavius: in-project sprite sheet</p>
+        <p>NPC placeholders: CC0 (created for this build)</p>
+        <h3>Audio</h3>
+        <p>UI Click (silent placeholder) — CC0</p>
+        <h3>Special Thanks</h3>
+        <p>All contributors and testers</p>
+      </div>
+      <button id="credits-close" class="btn credits-close">Close</button>
     </div>
-  </dialog>
 
-  <dialog id="build" class="window">
-    <div class="window-title">Build & Upgrades</div>
-    <div id="build-list" class="shop-list"></div>
-    <div class="window-footer">
-      <button class="btn" id="build-close">Close</button>
-    </div>
-  </dialog>
-
-  <dialog id="controls" class="window">
-    <div class="window-title">Controls</div>
-    <div class="dialog-body">
-      <ul class="help-list">
-        <li><b>Move:</b> WASD or Arrow Keys</li>
-        <li><b>Pause/Resume:</b> P or Pause button</li>
-        <li><b>Speed:</b> Speed button (×1/×1.5/×2)</li>
-        <li><b>Interact:</b> E (talk to citizens, use doors, counter)</li>
-        <li><b>Open Mailbox/Build/Report:</b> Toolbar buttons</li>
-        <li><b>Click Citizen:</b> View License Card</li>
-      </ul>
-    </div>
-    <div class="window-footer">
-      <button class="btn" id="controls-close">Close</button>
-    </div>
-  </dialog>
-
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
