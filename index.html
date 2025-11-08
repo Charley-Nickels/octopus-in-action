@@ -1,0 +1,101 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Octopus In Action v1.1 — Sprite-Ready Playtest (Hotfix)</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div id="hud">
+    <div id="stats">
+      <div class="stat"><label>Day</label><span id="day">Mon</span></div>
+      <div class="stat"><label>Time</label><span id="time">09:00</span></div>
+      <div class="stat"><label>Budget</label><span id="budget">$0</span></div>
+      <div class="stat"><label>Mayor LV</label><span id="level">1</span></div>
+      <div class="stat"><label>Satisfaction</label><span id="sat">50</span></div>
+    </div>
+    <div id="buttons">
+      <button class="btn" id="pauseBtn">Pause</button>
+      <button class="btn" id="speedBtn">Speed:1x</button>
+      <button class="btn" id="buildBtn">Build</button>
+      <button class="btn" id="mailBtn">Mailbox</button>
+      <button class="btn" id="spriteBtn">Sprites</button>
+      <button class="btn" id="helpBtn">Help</button>
+    </div>
+  </div>
+
+  <canvas id="game" width="960" height="640" aria-label="game"></canvas>
+
+  <div id="modalOverlay" class="hidden"></div>
+
+  <!-- Contact Card -->
+  <div id="contactCard" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="cardHeader">Citizen ID</div>
+    <div class="idRow">
+      <div class="portrait"><canvas id="portraitCanvas" width="64" height="64"></canvas></div>
+      <div class="idFields">
+        <div><b>Name:</b> <span id="ccName"></span></div>
+        <div><b>Race:</b> <span id="ccRace"></span></div>
+        <div><b>Age:</b> <span id="ccAge"></span></div>
+        <div><b>Address:</b> <span id="ccAddress"></span></div>
+        <div><b>Job:</b> <span id="ccJob"></span></div>
+      </div>
+    </div>
+    <div class="modalActions"><button class="btn" id="closeCC">Close</button></div>
+  </div>
+
+  <!-- Shop -->
+  <div id="shopUI" class="modal hidden">
+    <div class="cardHeader">General Store</div>
+    <div id="shopItems"></div>
+    <div class="modalActions"><button class="btn" id="closeShop">Exit Shop</button></div>
+  </div>
+
+  <!-- Task -->
+  <div id="taskUI" class="modal hidden">
+    <div class="cardHeader">New Task</div>
+    <div id="taskText"></div>
+    <div class="modalActions">
+      <button class="btn" id="acceptTask">Accept</button>
+      <button class="btn" id="dismissTask">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- Build -->
+  <div id="buildUI" class="modal hidden">
+    <div class="cardHeader">Build Menu</div>
+    <div id="buildList"></div>
+    <div class="hint">Select a building, then click a valid grass tile to place it.</div>
+    <div class="modalActions"><button class="btn" id="closeBuild">Close</button></div>
+  </div>
+
+  <!-- Help -->
+  <div id="helpUI" class="modal hidden">
+    <div class="cardHeader">Controls & Help</div>
+    <div class="helpText">
+      <p><b>Move:</b> Arrow keys / WASD. <b>Click:</b> Citizens or “!” bubbles. <b>Enter:</b> Walk onto a door tile.</p>
+      <p><b>Pause</b> freezes time & citizens. <b>Speed</b> cycles 1x/1.5x/2x. <b>Sprites</b> lets you load PNG/JPG at runtime.</p>
+    </div>
+    <div class="modalActions"><button class="btn" id="closeHelp">Close</button></div>
+  </div>
+
+  <!-- Sprites Modal -->
+  <div id="spriteUI" class="modal hidden">
+    <div class="cardHeader">Load Sprites (PNG/JPG)</div>
+    <div class="helpText">
+      <p>Drag files onto the canvas or pick below. Auto-detects files named <code>mayor.*</code>, <code>beaver.*</code>, <code>dolphin.*</code>, <code>lobster.*</code> in the same folder.</p>
+      <div class="grid2">
+        <label>Mayor:<input type="file" id="fileMayor" accept=".png,.jpg,.jpeg"/></label>
+        <label>Beaver:<input type="file" id="fileBeaver" accept=".png,.jpg,.jpeg"/></label>
+        <label>Dolphin:<input type="file" id="fileDolphin" accept=".png,.jpg,.jpeg"/></label>
+        <label>Lobster:<input type="file" id="fileLobster" accept=".png,.jpg,.jpeg"/></label>
+      </div>
+    </div>
+    <div class="modalActions"><button class="btn" id="closeSprites">Done</button></div>
+  </div>
+
+  <script defer src="script.js"></script>
+</body>
+</html>
