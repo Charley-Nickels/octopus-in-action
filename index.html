@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Octopus In Action v1.1 (Preview)</title>
+  <title>Octopus In Action v1.1.1 (Hotfix)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
@@ -18,6 +18,7 @@
       <span class="icon star"></span><span id="hud-level">1</span>
       <button id="btn-speed" class="btn">Speed ×1</button>
       <button id="btn-pause" class="btn warn">Pause</button>
+      <button id="btn-help" class="btn">Controls</button>
     </div>
   </div>
 
@@ -30,9 +31,9 @@
   <div id="game-wrap">
     <canvas id="game" width="960" height="640"></canvas>
     <div id="toast"></div>
+    <div id="interact-hint">E: Interact</div>
   </div>
 
-  <!-- Contact Card (License Style) -->
   <dialog id="contact-card" class="window">
     <div class="window-title">Citizen License</div>
     <div class="license">
@@ -50,7 +51,14 @@
     </div>
   </dialog>
 
-  <!-- Shop -->
+  <dialog id="talk" class="window">
+    <div class="window-title">Conversation</div>
+    <div class="dialog-body" id="talk-body"></div>
+    <div class="window-footer">
+      <button class="btn" id="talk-close">Close</button>
+    </div>
+  </dialog>
+
   <dialog id="shop" class="window">
     <div class="window-title">OctoMart</div>
     <div id="shop-list" class="shop-list"></div>
@@ -59,7 +67,6 @@
     </div>
   </dialog>
 
-  <!-- Mailbox -->
   <dialog id="mailbox" class="window">
     <div class="window-title">Mailbox</div>
     <div id="mailbox-list" class="mail-list"></div>
@@ -68,12 +75,28 @@
     </div>
   </dialog>
 
-  <!-- Build (minimal for v1.1: permits & simple upgrade) -->
   <dialog id="build" class="window">
     <div class="window-title">Build & Upgrades</div>
     <div id="build-list" class="shop-list"></div>
     <div class="window-footer">
       <button class="btn" id="build-close">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="controls" class="window">
+    <div class="window-title">Controls</div>
+    <div class="dialog-body">
+      <ul class="help-list">
+        <li><b>Move:</b> WASD or Arrow Keys</li>
+        <li><b>Pause/Resume:</b> P or Pause button</li>
+        <li><b>Speed:</b> Speed button (×1/×1.5/×2)</li>
+        <li><b>Interact:</b> E (talk to citizens, use doors, counter)</li>
+        <li><b>Open Mailbox/Build/Report:</b> Toolbar buttons</li>
+        <li><b>Click Citizen:</b> View License Card</li>
+      </ul>
+    </div>
+    <div class="window-footer">
+      <button class="btn" id="controls-close">Close</button>
     </div>
   </dialog>
 
