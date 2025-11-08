@@ -1,35 +1,84 @@
-/* style.css — brighter tiles + retro UI hotfix */
 :root{
-  --bg:#0f0f1a; --panel:#1a1a2a; --panel2:#23233a; --accent:#83e0a5; --accent2:#f3c969;
-  --text:#d9e6f2; --muted:#a5b3c6; --border:#3a3a55; --btn:#2a2a45; --btnHover:#3a3a62;
+  --bg:#101218;
+  --ink:#e5e7eb;
+  --muted:#9aa0a6;
+  --panel:#1b1f2a;
+  --panel2:#232838;
+  --accent:#8ab4f8;
+  --gold:#e6c15b;
+  --warn:#e58;
+  --green:#7ce39c;
+  --grid:#2a3043;
+  --shadow:rgba(0,0,0,.35);
+  font-synthesis-weight:none;
 }
+
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:monospace}
-#hud{position:fixed;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:8px;z-index:10}
-#stats,#buttons{display:flex;gap:8px;padding:8px;background:var(--panel);border:2px solid var(--border);box-shadow:0 0 0 2px #000 inset}
-.stat{display:flex;gap:6px;align-items:center;padding:4px 6px;background:var(--panel2);border:1px solid var(--border)}
-.stat label{color:var(--muted);min-width:80px;display:inline-block}
-.btn{background:var(--btn);border:2px solid var(--border);color:var(--text);padding:6px 10px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;box-shadow:0 0 0 2px #000 inset}
-.btn:hover{background:var(--btnHover)}
-#game{display:block;margin:70px auto 0;border:4px solid var(--border);background:#0d0d12;image-rendering:pixelated}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font: normal 12px Verdana, Geneva, Tahoma, sans-serif;}
 
-/* Modals */
-.modal.hidden,#modalOverlay.hidden{display:none}
-#modalOverlay{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.6);z-index:20}
-.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:30;background:var(--panel);border:3px solid var(--border);min-width:420px;max-width:720px;padding:10px;box-shadow:0 0 0 2px #000 inset}
-.cardHeader{font-weight:bold;color:var(--accent2);margin-bottom:8px;border-bottom:1px dashed var(--border);padding-bottom:4px}
-.modalActions{margin-top:12px;display:flex;justify-content:flex-end;gap:8px}
-.idRow{display:flex;gap:10px}
-.portrait{width:68px;height:68px;border:2px solid var(--border);background:var(--panel2);display:flex;align-items:center;justify-content:center}
-#shopItems{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.shopItem{border:2px solid var(--border);background:var(--panel2);padding:6px}
-.shopItem .title{color:var(--accent)} .shopItem .cost{color:var(--accent2)}
-#buildList{display:flex;flex-direction:column;gap:8px}
-.buildOption{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--border);background:var(--panel2);padding:6px}
-.hint{color:var(--muted);margin-top:6px;font-size:12px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
-/* Brightened tiles for visibility */
-:root{
-  --grass1:#245f2a; --grass2:#2b6f33; --road:#46464a; --bldgRes:#6a4f7a; --bldgShop:#3f7c5e; --bldgHall:#7c6a4f; --nameBg:rgba(0,0,0,.35);
+#hud{
+  position:sticky; top:0; z-index:5;
+  background:linear-gradient(0deg,var(--panel),var(--panel2));
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 10px; border-bottom:1px solid #000; box-shadow:0 2px 0 var(--shadow);
 }
+.hud-group{display:flex; gap:10px; align-items:center;}
+.hud-label{color:var(--muted); margin-right:4px}
+.icon{display:inline-block; width:12px; height:12px; margin-right:4px; vertical-align:-2px;}
+.icon.coin{background: radial-gradient(circle at 30% 30%, #fff7c2 20%, var(--gold) 60%, #a88315)}
+.icon.star{background:
+  conic-gradient(from 0deg,#ffd 0 10%, #0000 10% 20%, #ffd 20% 30%, #0000 30% 40%, #ffd 40% 50%, #0000 50% 60%, #ffd 60% 70%, #0000 70% 80%, #ffd 80% 90%, #0000 90% 100%);
+  clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  background-color:#f5d76e;
+}
+
+#toolbar{
+  display:flex; gap:8px; padding:8px 10px; background:var(--panel); border-bottom:1px solid #000;
+}
+
+.btn{
+  background:var(--panel2); color:var(--ink);
+  border:1px solid #000; padding:6px 10px; cursor:pointer;
+  box-shadow: inset 0 0 0 1px #3a4466, 0 2px 0 #000;
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.btn:hover{box-shadow: inset 0 0 0 1px #5a6591, 0 2px 0 #000; color:#fff}
+.btn:active{transform:translateY(1px); box-shadow: inset 0 0 0 1px #5a6591, 0 1px 0 #000;}
+.btn.warn{color:#fff; background:#4a2433; box-shadow: inset 0 0 0 1px #8a3a57, 0 2px 0 #000;}
+
+#game-wrap{position:relative; display:flex; justify-content:center; padding:16px;}
+#game{image-rendering:pixelated; border:1px solid #000; background:#182033; box-shadow:0 4px 0 #000;}
+#toast{
+  position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
+  background:rgba(0,0,0,.7); padding:6px 10px; border:1px solid #000; border-radius:4px;
+  display:none;
+}
+
+.window{
+  border:none; padding:0; background:transparent;
+}
+.window::backdrop{background:rgba(0,0,0,.5)}
+.window > .window-title{
+  background:var(--panel2); padding:8px 10px; border:1px solid #000; border-bottom:none;
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.window .license, .window .shop-list, .window .mail-list{
+  background:var(--panel); border:1px solid #000; padding:10px; max-height:60vh; overflow:auto; min-width:360px;
+}
+.window .window-footer{display:flex; gap:8px; justify-content:flex-end; padding:8px 0}
+
+.license{display:flex; gap:12px}
+.license .portrait{width:48px; height:48px; border:1px solid #000; background:#0e1324; box-shadow: inset 0 0 0 1px #3a4466;}
+.license .fields > div{margin:4px 0}
+.legend{color:var(--muted); margin-left:8px;}
+
+.shop-list .item, .mail-list .mail, .build-item{
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--panel2); border:1px solid #000; padding:8px; margin:6px 0; gap:10px;
+}
+.shop-list .item .meta, .build-item .meta{display:flex; flex-direction:column; gap:4px}
+.price{color:var(--gold)}
+.small{color:var(--muted); font-size:11px}
+
+/* Task bubble above heads */
+.bubble{ position:absolute; width:16px; height:16px; background:#ffd966; border:1px solid #000; }
