@@ -1,5 +1,6 @@
 {
-  "generated": "2025-11-09T06:39:29.562317Z",
+  "generated": "2025-11-09T07:48:06.995597Z",
+  "version": "Alpha v1.152g (Playable)",
   "sprites": [
     {
       "key": "beaver_adult",
@@ -48,10 +49,6 @@
     {
       "key": "otter_adult",
       "file": "assets/sprites/characters/otter_adult_sheet.png"
-    },
-    {
-      "key": "mayor_octavius",
-      "file": "assets/sprites/characters/mayor_octavius_sprite_sheet.png"
     }
   ],
   "tiles": {

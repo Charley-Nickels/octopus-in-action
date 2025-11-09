@@ -3,21 +3,23 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Octopus In Action — Alpha v1.152f (Visual Update)</title>
+<title>Octopus In Action — Alpha v1.152g (Playable)</title>
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div id="hud">
-  <div class="title">Octopus In Action — Alpha v1.152f</div>
-  <div class="clock"><span id="time"></span></div>
-  <div class="menu">
+<header id="hud">
+  <div class="title">Octopus In Action — Alpha v1.152g (Playable)</div>
+  <div class="clock" id="clock">09:00</div>
+  <nav class="menu">
     <button id="btnStart">Start</button>
     <button id="btnPause">Pause</button>
     <button id="btnOptions">Options</button>
-  </div>
-</div>
-<canvas id="game" width="800" height="480"></canvas>
-<audio id="sfxClick" preload="auto"></audio>
+  </nav>
+</header>
+<main>
+  <canvas id="game" width="960" height="540"></canvas>
+  <div id="hint">Arrow keys/WASD to move Mayor. Start = run time. Pause = stop time.</div>
+</main>
 <script src="script.js"></script>
 </body>
 </html>
