@@ -1,5 +1,4 @@
-# Changelog — Alpha v1.152g (Playable)
-- Mayor movement (WASD/Arrow)
-- NPC idle wander with delivered sheets
-- HUD buttons restored
-- Slower time
+# Changelog — Alpha v1.152g-b HOTFIX (Playable)
+- Baked-in readable sprites (mayor + 4 NPC types) for guaranteed visibility
+- Restored HUD and controls
+- Simple world tiles and idle movement

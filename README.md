@@ -1,8 +1,11 @@
-# Octopus In Action — Alpha v1.152g (Playable)
-Generated: 2025-11-09T07:48:06.995597Z
+# Octopus In Action — Alpha v1.152g-b HOTFIX (Playable)
+Generated: 2025-11-09T07:53:07.781339Z
 
-Playable baseline:
-- Arrow/WASD to move Mayor
-- Idle-wandering NPCs from delivered V1 sheets
-- HUD: Start/Pause/Options
-- Time: 1 in-game minute = 6000 ms
+This **HOTFIX** bakes visible sprites and a playable loop so we can verify the deploy and controls quickly:
+- WASD/Arrows to move the Mayor
+- NPC idle wandering
+- Clear tiles (water/grass/path)
+- HUD buttons (Start/Pause)
+- Slower time
+
+Once verified live, we'll swap these placeholders with your real V1 sheets via the manifest mapping.
