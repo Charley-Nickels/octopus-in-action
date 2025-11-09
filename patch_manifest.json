@@ -1,0 +1,20 @@
+{
+  "version": "Alpha v1.152j (Playable)",
+  "generated": "2025-11-09T09:03:43.165203Z",
+  "sprites": [
+    {
+      "key": "mayor_octavius_adult",
+      "file": "assets/sprites/characters/mayor_octavius_adult_sheet.png"
+    }
+  ],
+  "tiles": {
+    "grass": "assets/tiles/tile_grass.png",
+    "path": "assets/tiles/tile_path.png",
+    "water": "assets/tiles/tile_water.png"
+  },
+  "sfx": [
+    "assets/sfx/ui_click.wav",
+    "assets/sfx/mail_open.wav",
+    "assets/sfx/task_complete.wav"
+  ]
+}

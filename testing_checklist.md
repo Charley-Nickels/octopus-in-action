@@ -1,0 +1,4 @@
+- [ ] HUD visible
+- [ ] Time advances on Start
+- [ ] NPCs visible
+- [ ] Space greets when near NPC during 09–17

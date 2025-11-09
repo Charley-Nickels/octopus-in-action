@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Octopus In Action — Alpha v1.152j (Playable)</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div id="hud">
+    <span class="title">Octopus In Action — Alpha v1.152j (Playable)</span>
+    <div class="buttons">
+      <button id="btnStart">Start</button>
+      <button id="btnPause">Pause</button>
+      <button id="btnMailbox">Mailbox</button>
+      <button id="btnOptions">Options</button>
+    </div>
+    <div id="stats">Time: <span id="clock">09:00</span> | Cash: $<span id="cash">0</span></div>
+  </div>
+  <canvas id="game" width="1280" height="720"></canvas>
+  <div id="overlay" class="hidden">
+    <div class="panel">
+      <h3 id="overlayTitle">Mailbox</h3>
+      <div id="overlayBody"></div>
+      <div class="row">
+        <button id="btnAccept">Accept</button>
+        <button id="btnComplete">Complete</button>
+        <button id="btnClose">Close</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
