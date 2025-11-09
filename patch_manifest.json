@@ -1,20 +1,23 @@
 {
-  "version": "Alpha v1.152j (Playable)",
-  "generated": "2025-11-09T09:03:43.165203Z",
-  "sprites": [
-    {
-      "key": "mayor_octavius_adult",
-      "file": "assets/sprites/characters/mayor_octavius_adult_sheet.png"
-    }
-  ],
+  "version": "Alpha v1.152j (Hotfix)",
+  "time_scale": { "REAL_MS_PER_INGAME_MINUTE": 1000 },
   "tiles": {
     "grass": "assets/tiles/tile_grass.png",
-    "path": "assets/tiles/tile_path.png",
+    "path":  "assets/tiles/tile_path.png",
     "water": "assets/tiles/tile_water.png"
   },
+  "buildings_glob": "assets/tiles/buildings/*.png",
+  "sprites": [
+    { "key":"mayor_octavius_adult", "file":"assets/sprites/characters/mayor_octavius_adult_sheet.png" }
+  ],
   "sfx": [
     "assets/sfx/ui_click.wav",
     "assets/sfx/mail_open.wav",
     "assets/sfx/task_complete.wav"
+  ],
+  "mailbox_tasks": [
+    { "id":"t001", "title":"Welcome to Day 1",
+      "body":"Greet 3 citizens between 09:00–17:00.",
+      "from":"City Hall Clerk", "reward":5, "type":"greet", "goal":3 }
   ]
 }
