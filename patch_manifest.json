@@ -1,0 +1,67 @@
+{
+  "generated": "2025-11-09T06:39:29.562317Z",
+  "sprites": [
+    {
+      "key": "beaver_adult",
+      "file": "assets/sprites/characters/beaver_adult_sheet.png"
+    },
+    {
+      "key": "beaver_child",
+      "file": "assets/sprites/characters/beaver_child_sheet.png"
+    },
+    {
+      "key": "beaver_elder",
+      "file": "assets/sprites/characters/beaver_elder_sheet.png"
+    },
+    {
+      "key": "beaver_teen",
+      "file": "assets/sprites/characters/beaver_teen_sheet.png"
+    },
+    {
+      "key": "crab_child",
+      "file": "assets/sprites/characters/crab_child_sheet.png"
+    },
+    {
+      "key": "crab_elder",
+      "file": "assets/sprites/characters/crab_elder_sheet.png"
+    },
+    {
+      "key": "dolphin_adult",
+      "file": "assets/sprites/characters/dolphin_adult_sheet.png"
+    },
+    {
+      "key": "dolphin_child",
+      "file": "assets/sprites/characters/dolphin_child_sheet.png"
+    },
+    {
+      "key": "dolphin_elder",
+      "file": "assets/sprites/characters/dolphin_elder_sheet.png"
+    },
+    {
+      "key": "dolphin_teen",
+      "file": "assets/sprites/characters/dolphin_teen_sheet.png"
+    },
+    {
+      "key": "duck_adult",
+      "file": "assets/sprites/characters/duck_adult_sheet.png"
+    },
+    {
+      "key": "otter_adult",
+      "file": "assets/sprites/characters/otter_adult_sheet.png"
+    },
+    {
+      "key": "mayor_octavius",
+      "file": "assets/sprites/characters/mayor_octavius_sprite_sheet.png"
+    }
+  ],
+  "tiles": {
+    "grass": "assets/tiles/tile_grass.png",
+    "path": "assets/tiles/tile_path.png",
+    "water": "assets/tiles/tile_water.png"
+  },
+  "ui": [],
+  "sfx": [],
+  "time_scale": {
+    "REAL_MS_PER_INGAME_MINUTE": 6000
+  }
+}
