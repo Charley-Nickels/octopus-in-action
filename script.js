@@ -147,7 +147,7 @@ function tryGreet(){
 // ------- Game loop -------
 function loop(now){
   const dt = now - last; last = now;
-  if(running){ const step = (manifest.time_scale?.REAL_MS_PER_INGAME_MINUTE ?? 1000); gameMinutes += dt/ (step/60); if(gameMinutes>=24*60) gameMinutes=0; }
+  if(running){ const step = (manifest.time_scale?.REAL_MS_PER_INGAME_MINUTE ?? 1000); gameMinutes += dt/ step; if(gameMinutes>=24*60) gameMinutes=0; }
 
   // HUD clock
   const hr=String(Math.floor(gameMinutes/60)).padStart(2,'0');
