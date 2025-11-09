@@ -5,19 +5,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Octopus In Action — Alpha v1.150</title>
   <link rel="stylesheet" href="style.css"/>
-    <!-- LogRocket Tracking -->
-    <script src="https://cdn.lr-in-prod.com/LogRocket.min.js" crossorigin="anonymous"></script>
-    <script>
-    window.LogRocket && window.LogRocket.init('YOUR_PROJECT_ID_HERE', {
+<!-- LogRocket Tracking -->
+<script src="https://cdn.lr-in-prod.com/LogRocket.min.js" crossorigin="anonymous"></script>
+<script>
+  window.LogRocket && window.LogRocket.init('czgngb/octopus-in-action', {
     release: 'v1.6',
     console: { isEnabled: true },
     network: { isEnabled: true },
     dom: { textSanitizer: true }
   });
 </script>
+
 </head>
 <body>
   <div id="game-root">
+    <div id="loading" class="overlay hidden">
+      <div class="menu-panel"><h2>Loading…</h2><p>Please wait while assets load.</p></div>
+    </div>
+    <div id="start-screen" class="overlay">
+      <div class="menu-panel">
+        <h1>Octopus In Action</h1>
+        <p>Atlas Forge Interactive</p>
+        <button id="start-play" class="btn">Start</button>
+      </div>
+    </div>
+
     <div class="titlebar">
       <div class="brand">
         <span class="logo-circle"></span>
@@ -84,7 +96,6 @@
       </div>
       <button id="credits-close" class="btn credits-close">Close</button>
     </div>
-
   </div>
   <script src="script.js"></script>
 </body>

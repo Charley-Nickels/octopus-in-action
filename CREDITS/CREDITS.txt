@@ -1,13 +1,1 @@
-Atlas Forge Interactive (“Our Studio”) — Octopus In Action (Alpha v1.150)
-
-Art:
-- Mayor Octavius sprite sheet — in-project asset.
-- NPC backup sprites and tiles — created for this build; dedicated to the public domain (CC0).
-  Author: Atlas Forge Interactive build system.
-- UI icons and contact card backgrounds — CC0 placeholders for this build.
-
-Audio:
-- ui_click_silent_cc0.wav — generated silent placeholder; dedicated to CC0.
-
-Notes:
-- All placeholders in this package are CC0. Replace with final art/audio at any time.
+CC0 placeholders; Atlas Forge Interactive studio credit.
