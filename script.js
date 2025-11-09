@@ -1,18 +1,16 @@
 
-/* Octopus In Action — Alpha v1.150
- * 1 real minute = 1 in-game hour; tasks progress only 9–5.
- * Robust fallbacks for missing assets.
- */
+/* Octopus In Action — Alpha v1.150 PATCH1 */
 const GAME = {
   version: 'Alpha v1.150',
+  mayorAnim: {frame:0, t:0, fw:32, fh:32, cols:4, rows:4},
   day: 1,
   hour: 9,
   minute: 0,
   budget: 1000,
   sat: 50,
-  paused: false,
+  paused: true,
   sandbox: false,
-  factionTint: 'dolphin', // dolphin | beaver | lobster
+  factionTint: 'dolphin',
   mail: [],
   tasks: [],
   citizens: [],
@@ -67,27 +65,26 @@ const ctx = scene.getContext('2d');
 const menu = document.getElementById('menu');
 const credits = document.getElementById('credits');
 const creditsClose = document.getElementById('credits-close');
+const startScreen = document.getElementById('start-screen');
+const startPlay = document.getElementById('start-play');
+const loadingOverlay = document.getElementById('loading');
 
-// Util: play SFX
 function playClick(){ new Audio(GAME.assets.audio.click).play().catch(()=>{}); }
 
-// Simple map (20x12 tiles)
+// Map
 const MAP_W = 20, MAP_H = 12;
 const map = [];
 for(let y=0;y<MAP_H;y++){
   const row = [];
   for(let x=0;x<MAP_W;x++){
-    // center plaza path, elsewhere grass
     if (y===6 || x===10) row.push('path');
     else row.push('grass');
   }
   map.push(row);
 }
-// Place buildings on edges
 for(let i=2;i<MAP_W-2;i+=4){ map[1][i] = 'building'; }
 map[1][10] = 'cityhall';
 
-// Safe image loader (fallback to blocked placeholder)
 function loadImageSafe(src, fallback){
   return new Promise(resolve=>{
     const img = new Image();
@@ -104,22 +101,27 @@ function loadImageSafe(src, fallback){
   });
 }
 
-// Preload assets
 const IMGS = {};
 async function preload(){
+  loadingOverlay.classList.remove('hidden');
   IMGS.grass = await loadImageSafe(GAME.assets.tiles.grass, GAME.assets.sprites.blocked);
   IMGS.path = await loadImageSafe(GAME.assets.tiles.path, GAME.assets.sprites.blocked);
   IMGS.building = await loadImageSafe(GAME.assets.tiles.building, GAME.assets.sprites.blocked);
   IMGS.cityhall = await loadImageSafe(GAME.assets.tiles.cityhall, GAME.assets.sprites.blocked);
   IMGS.door = await loadImageSafe(GAME.assets.tiles.door, GAME.assets.sprites.blocked);
   IMGS.mayor = await loadImageSafe(GAME.assets.sprites.mayor, GAME.assets.sprites.blocked);
+  if (IMGS.mayor){
+    GAME.mayorAnim.cols = 4; GAME.mayorAnim.rows = 4;
+    GAME.mayorAnim.fw = Math.floor(IMGS.mayor.width / GAME.mayorAnim.cols) || 32;
+    GAME.mayorAnim.fh = Math.floor(IMGS.mayor.height / GAME.mayorAnim.rows) || 32;
+  }
   IMGS.npcOcto = await loadImageSafe(GAME.assets.sprites.npcOcto, GAME.assets.sprites.blocked);
   IMGS.npcBeaver = await loadImageSafe(GAME.assets.sprites.npcBeaver, GAME.assets.sprites.blocked);
   IMGS.npcDolphin = await loadImageSafe(GAME.assets.sprites.npcDolphin, GAME.assets.sprites.blocked);
   IMGS.npcLobster = await loadImageSafe(GAME.assets.sprites.npcLobster, GAME.assets.sprites.blocked);
+  loadingOverlay.classList.add('hidden');
 }
 
-// Citizens
 function spawnCitizens(){
   const list = [
     {name:'Aqua', faction:'dolphin', sprite:IMGS.npcDolphin},
@@ -129,21 +131,18 @@ function spawnCitizens(){
     {name:'Marina', faction:'dolphin', sprite:IMGS.npcDolphin},
     {name:'Cedar', faction:'beaver', sprite:IMGS.npcBeaver},
   ];
-  GAME.citizens = list.map((c,i)=>({ ...c, x: 3+i*2, y: 8, dir:'S', state:'wander', hourTarget:9 }));
+  GAME.citizens = list.map((c,i)=>({ ...c, x: 3+i*2, y: 8, dir:'S', state:'wander'}));
 }
 
-// Simple walkability
 function isWalkable(x,y){
   if (x<0||y<0||x>=MAP_W||y>=MAP_H) return false;
   const t = map[y][x];
   return t!=='building' && t!=='cityhall';
 }
 
-// NPC update per tick
 function updateCitizens(){
   const h = GAME.hour;
   for(const c of GAME.citizens){
-    // schedule: 9-12 work (near cityhall), 12-13 lunch (wander), 13-17 work, else home (stay)
     if (h < 9 || h >= 22){ c.state='home'; continue; }
     if ((h>=9&&h<12)||(h>=13&&h<17)){ c.state='work'; }
     else if (h>=12 && h<13){ c.state='lunch'; }
@@ -155,7 +154,6 @@ function updateCitizens(){
       const nx = c.x+dx, ny=c.y+dy;
       if (isWalkable(nx,ny)){ c.x=nx; c.y=ny; }
     } else if (c.state==='work'){
-      // drift towards plaza (10,6)
       const tx=10, ty=6;
       const dx=Math.sign(tx - c.x), dy=Math.sign(ty - c.y);
       const nx=c.x+dx, ny=c.y+dy;
@@ -164,13 +162,11 @@ function updateCitizens(){
   }
 }
 
-// Tasks & mail
 function pushMail(letter){
   GAME.mail.push(letter);
   mailBadge.textContent = GAME.mail.length;
 }
 function generateDailyMail(){
-  // Up to 4 letters/day
   const letters = [
     {type:'task', title:'Fix Plaza Lights', hours:2, dept:'Public Works'},
     {type:'task', title:'Permit Review: Kiosk', hours:3, dept:'Planning'},
@@ -214,19 +210,17 @@ function renderMail(){
   });
 }
 
-// Contact card demo
 function openDialogForCitizen(c){
   dialogText.textContent = `${c.name} (${c.faction}) says:\n\"Mayor, could you help the town today?\"`;
   dialog.classList.remove('hidden');
 }
 
-// Game clock
+// Time
 function tickMinute(){
   if (GAME.paused) return;
   GAME.minute += 1;
   if (GAME.minute >= 60){ GAME.minute = 0; GAME.hour += 1; }
   if (GAME.hour >= 24){ GAME.hour = 0; GAME.day += 1; generateDailyMail(); }
-  // tasks progress only 9-17 (5PM not inclusive of after hours)
   if (GAME.hour>=9 && GAME.hour<17){
     for(const t of GAME.tasks){
       if (!t.done){ t.inProgress = true; t.remaining = Math.max(0, t.remaining - 1/60); if (t.remaining===0){ t.done=true; pushMail({type:'report', title:`Task Complete: ${t.title}`, body:`Dept ${t.dept} finished.`}); }}
@@ -249,7 +243,19 @@ function updateHUD(){
   document.body.classList.add('faction-' + GAME.factionTint);
 }
 
-// Draw map & actors
+function drawMayor(){
+  const ts = GAME.tileSize;
+  const mx = 10*ts, my = 6*ts;
+  const img = IMGS.mayor || IMGS.blocked;
+  if (img === IMGS.blocked){ ctx.drawImage(img, 0,0, img.width, img.height, mx, my, ts, ts); return; }
+  const A = GAME.mayorAnim;
+  A.t += 1; if (A.t % 12 === 0){ A.frame = (A.frame+1)%(A.cols*A.rows); }
+  const cx = (A.frame % A.cols) * A.fw;
+  const cy = Math.floor(A.frame / A.cols) * A.fh;
+  ctx.drawImage(img, cx, cy, A.fw, A.fh, mx, my, ts, ts);
+}
+
+// Draw
 function draw(){
   ctx.imageSmoothingEnabled = false;
   const ts = GAME.tileSize;
@@ -260,17 +266,14 @@ function draw(){
       ctx.drawImage(img, 0,0, img.width, img.height, x*ts, y*ts, ts, ts);
     }
   }
-  // Mayor (center-ish)
-  const mayorX = 10*ts, mayorY = 6*ts;
-  ctx.drawImage(IMGS.mayor || IMGS.blocked, 0,0, (IMGS.mayor?IMGS.mayor.width:96), (IMGS.mayor?IMGS.mayor.height:96), mayorX, mayorY, ts, ts);
-  // Citizens
+  drawMayor();
   for(const c of GAME.citizens){
     const img = c.sprite || IMGS.blocked;
     ctx.drawImage(img, 0,0, img.width, img.height, c.x*ts, c.y*ts, ts, ts);
   }
 }
 
-// UI wiring
+// UI
 btnSandbox.onclick = ()=>{ playClick(); GAME.sandbox = !GAME.sandbox; updateHUD(); };
 btnPause.onclick = ()=>{ playClick(); GAME.paused = true; document.getElementById('menu').classList.remove('hidden'); };
 document.getElementById('menu-continue').onclick = ()=>{ playClick(); GAME.paused = false; document.getElementById('menu').classList.add('hidden'); };
@@ -281,12 +284,7 @@ creditsClose.onclick = ()=>{ playClick(); credits.classList.add('hidden'); };
 btnMail.onclick = ()=>{ playClick(); renderMail(); mailPanel.classList.remove('hidden'); };
 mailClose.onclick = ()=>{ playClick(); mailPanel.classList.add('hidden'); };
 
-// Dialog actions
-dialog.addEventListener('click', (e)=>{
-  if (e.target.dataset.action==='accept'){ playClick(); pushMail({type:'task', title:'Citizen Request', hours:1, dept:'Clerk'}); dialog.classList.add('hidden'); }
-  if (e.target.dataset.action==='reject'){ playClick(); dialog.classList.add('hidden'); }
-  if (e.target.dataset.action==='card'){ playClick(); alert('Contact Card shown (faction colors & details).'); }
-});
+startPlay.onclick = ()=>{ startScreen.classList.add('hidden'); GAME.paused=false; playClick(); };
 
 // Init
 (async function(){
@@ -295,8 +293,6 @@ dialog.addEventListener('click', (e)=>{
   updateHUD();
   draw();
   generateDailyMail();
-  // 1 real minute = 1 game hour -> 1 minute / 60 = 1 minute per 60 ticks => 1 tick per second advances 1 minute of game time
   GAME.timer = setInterval(tickMinute, 1000);
-  // Demo: after 10s, open dialog with a citizen
-  setTimeout(()=>openDialogForCitizen(GAME.citizens[0]), 10000);
+  setTimeout(()=>openDialogForCitizen(GAME.citizens[0]), 6000);
 })();

@@ -39,3 +39,5 @@ body{margin:0;background:var(--bg);color:var(--fg)}
 body.faction-dolphin .hud{box-shadow:0 8px 30px rgba(90,194,255,.35)}
 body.faction-beaver .hud{box-shadow:0 8px 30px rgba(194,138,90,.35)}
 body.faction-lobster .hud{box-shadow:0 8px 30px rgba(255,106,106,.35)}
+#start-screen, #loading { z-index: 1000; }
+#start-play { padding: 10px 16px; font-size: 16px; }
