@@ -1,6 +1,6 @@
 {
   "version": "Alpha v1.152j (Hotfix)",
-  "time_scale": { "REAL_MS_PER_INGAME_MINUTE": 1000 },
+  "time_scale": { "REAL_MS_PER_INGAME_MINUTE": 3000 },
   "tiles": {
     "grass": "assets/tiles/tile_grass.png",
     "path":  "assets/tiles/tile_path.png",
