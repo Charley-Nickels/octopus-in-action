@@ -3,99 +3,39 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Octopus In Action — Alpha v1.150</title>
+  <title>Octopus In Action — Alpha v1.152d</title>
   <link rel="stylesheet" href="style.css"/>
-<!-- LogRocket Tracking -->
-<script src="https://cdn.lr-in-prod.com/LogRocket.min.js" crossorigin="anonymous"></script>
-<script>
-  window.LogRocket && window.LogRocket.init('czgngb/octopus-in-action', {
-    release: 'v1.6',
-    console: { isEnabled: true },
-    network: { isEnabled: true },
-    dom: { textSanitizer: true }
-  });
-</script>
-
+  <script src="https://cdn.lr-in-prod.com/LogRocket.min.js" crossorigin="anonymous"></script>
+  <script>
+    window.LogRocket && window.LogRocket.init('YOUR_PROJECT_ID_HERE', {
+      release: 'v1.152d',
+      console: { isEnabled: true },
+      network: { isEnabled: true },
+      dom: { textSanitizer: true }
+    });
+  </script>
 </head>
 <body>
-  <div id="game-root">
-    <div id="loading" class="overlay hidden">
-      <div class="menu-panel"><h2>Loading…</h2><p>Please wait while assets load.</p></div>
-    </div>
-    <div id="start-screen" class="overlay">
-      <div class="menu-panel">
-        <h1>Octopus In Action</h1>
-        <p>Atlas Forge Interactive</p>
-        <button id="start-play" class="btn">Start</button>
-      </div>
-    </div>
-
-    <div class="titlebar">
-      <div class="brand">
-        <span class="logo-circle"></span>
-        <span class="logo-text">Atlas Forge Interactive</span>
-      </div>
-      <div class="build">Octopus In Action — <strong>Alpha v1.150</strong></div>
-    </div>
-
-    <div id="hud" class="hud">
-      <div class="hud-item">Day: <span id="hud-day">1</span></div>
-      <div class="hud-item">Time: <span id="hud-time">09:00</span></div>
-      <div class="hud-item">Budget: $<span id="hud-budget">1000</span></div>
-      <div class="hud-item">Sat: <span id="hud-sat">50</span>%</div>
-      <div class="hud-item">Mode: <span id="hud-mode">Story</span></div>
-      <button id="btn-sandbox" class="btn">Sandbox</button>
-      <button id="btn-pause" class="btn">Pause</button>
-      <button id="btn-mail" class="btn mail-btn" title="Mailbox">
-        <img src="assets/ui/mail_icon_cc0.png" alt="mail"/>
-        <span id="mail-badge" class="badge">0</span>
-      </button>
-    </div>
-
-    <canvas id="scene" width="640" height="384"></canvas>
-
-    <div id="dialog" class="panel hidden">
-      <div class="dialog-text" id="dialog-text">…</div>
-      <div class="dialog-actions">
-        <button class="btn" data-action="accept">Accept</button>
-        <button class="btn" data-action="reject">Dismiss</button>
-        <button class="btn" data-action="card">Contact Card</button>
-      </div>
-    </div>
-
-    <div id="mailbox" class="panel hidden">
-      <div class="panel-title">Mailbox</div>
-      <div class="mail-list" id="mail-list"></div>
-      <div class="panel-actions">
-        <button id="mail-close" class="btn">Close</button>
-      </div>
-    </div>
-
-    <div id="menu" class="overlay hidden">
-      <div class="menu-panel">
-        <h2>Paused</h2>
-        <button id="menu-continue" class="btn">Continue</button>
-        <button id="menu-credits" class="btn">Credits</button>
-        <button id="menu-restart" class="btn">Restart Day</button>
-      </div>
-    </div>
-
-    <div id="credits" class="overlay hidden">
-      <div class="credits-roll">
-        <h1>Octopus In Action</h1>
-        <p>© 2025 Atlas Forge Interactive (“Our Studio”)</p>
-        <h3>Game Design & Code</h3>
-        <p>Project: Octopus In Action — HTML5 build</p>
-        <h3>Art</h3>
-        <p>Mayor Octavius: in-project sprite sheet</p>
-        <p>NPC placeholders: CC0 (created for this build)</p>
-        <h3>Audio</h3>
-        <p>UI Click (silent placeholder) — CC0</p>
-        <h3>Special Thanks</h3>
-        <p>All contributors and testers</p>
-      </div>
-      <button id="credits-close" class="btn credits-close">Close</button>
-    </div>
+  <div id="hud">
+    <div>Time: <span id="clock">09:00</span></div>
+    <div>Day: <span id="day">1</span></div>
+    <div>Budget: <span id="budget">$10,000</span></div>
+    <div>Sat: <span id="sat">50</span></div>
+    <button id="pauseBtn">Pause</button>
+    <button id="menuBtn">Menu</button>
+    <button id="mailBtn">Mailbox <span id="mailBadge" class="badge">0</span></button>
+  </div>
+  <canvas id="game" width="640" height="384"></canvas>
+  <div id="menu" class="panel hidden">
+    <h2>Menu</h2>
+    <p>Sandbox Mode: <span id="sandboxState">Off</span></p>
+    <button id="toggleSandbox">Toggle Sandbox</button>
+    <button id="closeMenu">Close</button>
+  </div>
+  <div id="mail" class="panel hidden">
+    <h2>Mailbox</h2>
+    <div id="letters"></div>
+    <button id="closeMail">Close</button>
   </div>
   <script src="script.js"></script>
 </body>
