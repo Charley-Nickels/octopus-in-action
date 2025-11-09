@@ -1,0 +1,33 @@
+{
+  "version": "1.152b",
+  "spriteFallbackOrder": [
+    "assets/sprites/latest/",
+    "assets/sprites/public_domain/",
+    "assets/sprites/legacy/"
+  ],
+  "sprites": {
+    "mayor_octavius": [
+      "assets/sprites/latest/mayor_octavius_sprite_sheet.png",
+      "assets/sprites/public_domain/mayor_octavius.png",
+      "assets/sprites/legacy/mayor_octavius.png"
+    ],
+    "otter_child": [
+      "assets/sprites/latest/otter_child.png"
+    ],
+    "otter_teen": [
+      "assets/sprites/latest/otter_teen.png"
+    ],
+    "otter_adult": [
+      "assets/sprites/latest/otter_adult.png"
+    ],
+    "otter_elder": [
+      "assets/sprites/latest/otter_elder.png"
+    ],
+    "lobster_adult": [
+      "assets/sprites/latest/lobster_adult.png"
+    ],
+    "dolphin_adult": [
+      "assets/sprites/latest/dolphin_adult.png"
+    ]
+  }
+}
