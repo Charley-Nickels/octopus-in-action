@@ -1,6 +1,12 @@
-# Octopus In Action — Alpha v1.152d (Art Master Build)
+# Octopus In Action — Alpha v1.152f (Visual Update)
+Generated: 2025-11-09T06:39:29.562317Z
 
-This build links to the **Master Art Library** with explicit v1→v2→v3 fallbacks per asset.
-- Replace `YOUR_PROJECT_ID_HERE` in `index.html` with your LogRocket project id.
-- All v1 assets are the most common/earliest consolidated versions; alt versions saved as v2+.
+## What's in this patch
+- Integrated **V1 character sheets** (species_age) and wired NPC population using available variants.
+- Mayor sprite loaded.
+- Environment tiles sourced from the **External Asset Library** (grass/path/water) with fallbacks.
+- UI buttons + **click SFX** hooked up.
+- **Slower time:** 1 in‑game minute = 6000 ms (1 real minute = 10 in‑game minutes).
 
+## How to run locally
+Open `index.html` in a local web server (or deploy to Vercel as usual).

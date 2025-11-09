@@ -1,7 +1,6 @@
-# CHANGELOG
-
-## v1.152d (2025-11-09T01:50:05.254863Z)
-- Integrated master art library with versioned fallbacks (v1→v2→v3).
-- Replaced block placeholders with stylized silhouette sprites/tiles where needed.
-- Preserved all uploaded variants for manual cherry-picking.
-- Minimal engine wired to master manifest for runtime fallback loading.
+# Changelog — Alpha v1.152f
+- New: V1 character sheets standardized (48×48 cells, 2×3 layout: male/female × front/back/side-right)
+- New: Mayor sprite included
+- New: Environment tiles from External Asset Library (with graceful fallbacks)
+- New: Menu buttons and UI click SFX
+- Balance: Time slowed — 1 in‑game minute = 6000ms

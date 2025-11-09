@@ -1,42 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Octopus In Action — Alpha v1.152d</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script src="https://cdn.lr-in-prod.com/LogRocket.min.js" crossorigin="anonymous"></script>
-  <script>
-    window.LogRocket && window.LogRocket.init('YOUR_PROJECT_ID_HERE', {
-      release: 'v1.152d',
-      console: { isEnabled: true },
-      network: { isEnabled: true },
-      dom: { textSanitizer: true }
-    });
-  </script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Octopus In Action — Alpha v1.152f (Visual Update)</title>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div id="hud">
-    <div>Time: <span id="clock">09:00</span></div>
-    <div>Day: <span id="day">1</span></div>
-    <div>Budget: <span id="budget">$10,000</span></div>
-    <div>Sat: <span id="sat">50</span></div>
-    <button id="pauseBtn">Pause</button>
-    <button id="menuBtn">Menu</button>
-    <button id="mailBtn">Mailbox <span id="mailBadge" class="badge">0</span></button>
+<div id="hud">
+  <div class="title">Octopus In Action — Alpha v1.152f</div>
+  <div class="clock"><span id="time"></span></div>
+  <div class="menu">
+    <button id="btnStart">Start</button>
+    <button id="btnPause">Pause</button>
+    <button id="btnOptions">Options</button>
   </div>
-  <canvas id="game" width="640" height="384"></canvas>
-  <div id="menu" class="panel hidden">
-    <h2>Menu</h2>
-    <p>Sandbox Mode: <span id="sandboxState">Off</span></p>
-    <button id="toggleSandbox">Toggle Sandbox</button>
-    <button id="closeMenu">Close</button>
-  </div>
-  <div id="mail" class="panel hidden">
-    <h2>Mailbox</h2>
-    <div id="letters"></div>
-    <button id="closeMail">Close</button>
-  </div>
-  <script src="script.js"></script>
+</div>
+<canvas id="game" width="800" height="480"></canvas>
+<audio id="sfxClick" preload="auto"></audio>
+<script src="script.js"></script>
 </body>
 </html>

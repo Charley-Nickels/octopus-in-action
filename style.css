@@ -1,9 +1,8 @@
 
-body{margin:0;font-family:system-ui,Arial,Helvetica,sans-serif;background:#0b1a22;color:#e6f7ff}
-#hud{display:flex;gap:16px;align-items:center;padding:8px 12px;background:#112733;position:sticky;top:0;z-index:2;border-bottom:1px solid #0a4155}
-#hud .badge{background:#1ea7fd;color:#002233;padding:2px 6px;border-radius:8px;margin-left:6px}
-canvas#game{display:block;margin:0 auto;background:#1b2d38;border-top:1px solid #0a4155}
-.panel{position:fixed;top:72px;right:16px;width:320px;background:#10232d;border:1px solid #0a4155;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-.hidden{display:none}
-button{background:#0e5270;color:#e6f7ff;border:1px solid #0a4155;border-radius:10px;padding:6px 10px;cursor:pointer}
-button:hover{filter:brightness(1.1)}
+:root{--bg:#0b1620;--fg:#eaf6ff;--accent:#90d7ff}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto,Arial}
+#hud{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#0f2230;position:sticky;top:0;border-bottom:1px solid #244}
+#hud .title{font-weight:700}
+#hud .menu button{margin-left:8px;background:#14374a;border:1px solid #255;padding:6px 10px;border-radius:8px;color:var(--fg);cursor:pointer}
+#hud .menu button:hover{filter:brightness(1.2)}
+canvas{display:block;margin:12px auto;border:1px solid #244;border-radius:10px;background:#0a1320}

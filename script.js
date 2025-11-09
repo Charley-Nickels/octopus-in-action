@@ -1,134 +1,101 @@
 
-const VERSION = "v1.152d";
-const WORK_START = 9;
-const WORK_END = 17;
-const CURFEW_START = 20;
-const CURFEW_END = 22;
+async function loadJSON(p){const r=await fetch(p);return r.json();}
+function loadImage(src){return new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.src=src;});}
+const rng=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
 
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
+(async()=>{
+  const manifest = await loadJSON('patch_manifest.json');
+  const cv = document.getElementById('game'); const ctx = cv.getContext('2d');
+  const timeEl = document.getElementById('time');
+  const btnStart = document.getElementById('btnStart');
+  const btnPause = document.getElementById('btnPause');
+  const btnOptions = document.getElementById('btnOptions');
+  const sfxClick = document.getElementById('sfxClick');
+  if(manifest.sfx && manifest.sfx.length){ sfxClick.src = manifest.sfx[0]; }
 
-const hudClock = document.getElementById('clock');
-const hudDay = document.getElementById('day');
-const mailBadge = document.getElementById('mailBadge');
-const pauseBtn = document.getElementById('pauseBtn');
-const menuBtn = document.getElementById('menuBtn');
-const mailBtn = document.getElementById('mailBtn');
-const panelMenu = document.getElementById('menu');
-const panelMail = document.getElementById('mail');
-const sandboxState = document.getElementById('sandboxState');
-const toggleSandbox = document.getElementById('toggleSandbox');
-const closeMenu = document.getElementById('closeMenu');
-const closeMail = document.getElementById('closeMail');
-const lettersDiv = document.getElementById('letters');
+  // Time system (slower): 1 in-game minute = 6000ms (10 min per real minute)
+  const REAL_MS_PER_INGAME_MINUTE = manifest.time_scale?.REAL_MS_PER_INGAME_MINUTE ?? 6000;
+  let gameMinutes = 9*60; // 09:00 start
+  let paused = true;
+  let lastTick = performance.now();
 
-let paused = false;
-let sandbox = false;
-let hour = 9, day = 1;
-let letters = [];
-let keys = {};
-let mapW = 20, mapH = 12, tile = 32;
-
-const map = new Array(mapH).fill(0).map((_,y)=> new Array(mapW).fill(0).map((_,x)=> (y===5||x===10)?1:0));
-
-const manifestPromise = fetch('assets/manifests/master_manifest.json').then(r=>r.json());
-
-async function loadByVersions(baseKey){
-  const manifest = await manifestPromise;
-  const entries = manifest.entries[baseKey];
-  if (!entries) return null;
-  for (const e of entries){
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = e.file + `?v=${VERSION}`;
-    try{
-      await img.decode();
-      return img;
-    }catch{}
+  function fmtTime(mins){const h=Math.floor(mins/60)%24, m=mins%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;}
+  function tick(ts){
+    const dt = ts - lastTick; lastTick = ts;
+    if(!paused){ gameMinutes += Math.floor(dt / REAL_MS_PER_INGAME_MINUTE); }
+    timeEl.textContent = fmtTime(gameMinutes);
+    render();
+    requestAnimationFrame(tick);
   }
-  return null;
-}
 
-// Player (Mayor)
-const player = { x: 9, y: 6, spd: 3, img: null, w: 48, h: 48 };
-loadByVersions("assets/sprites/latest/characters/mayor_octavius_sprite_sheet").then(img=>{ player.img = img; });
+  // Load tiles
+  const tiles = {};
+  tiles.grass = await loadImage(manifest.tiles.grass);
+  tiles.path  = await loadImage(manifest.tiles.path);
+  tiles.water = await loadImage(manifest.tiles.water);
 
-window.addEventListener('keydown',e=>{ keys[e.key] = true;});
-window.addEventListener('keyup',e=>{ keys[e.key] = false;});
-
-function canWalk(nx,ny){
-  return nx>=0 && ny>=0 && nx<mapW && ny<mapH;
-}
-
-function update(){
-  if (paused) return;
-  hour++; if (hour>=24){ hour=0; day++; hudDay.textContent = String(day); }
-  hudClock.textContent = `${String(hour).padStart(2,'0')}:00`;
-  if (hour>=WORK_START && hour<WORK_END){
-    if (Math.random()<0.2){ letters.push({ from: "Citizen", body: "Fix park benches.", hours: 2, status: "New" }); }
-  }
-  mailBadge.textContent = letters.length;
-
-  let nx = player.x, ny = player.y;
-  if (keys['ArrowLeft']) nx--;
-  if (keys['ArrowRight']) nx++;
-  if (keys['ArrowUp']) ny--;
-  if (keys['ArrowDown']) ny++;
-  if (canWalk(nx,ny)){ player.x = nx; player.y = ny; }
-}
-
-function draw(){
-  ctx.fillStyle = '#0c1c24'; ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  drawMap();
-  if (player.img){
-    ctx.drawImage(player.img,0,0,48,48, player.x*tile-8, player.y*tile-16, 48,48);
-  } else {
-    ctx.fillStyle = '#bcd'; ctx.fillRect(player.x*tile-8, player.y*tile-16, 32,32);
-  }
-}
-
-const tileCache = {};
-async function tileImg(name){
-  const imgKey = `assets/sprites/latest/tiles/${name}`.replace('.png','');
-  if (!tileCache[imgKey]){
-    tileCache[imgKey] = await loadByVersions(imgKey);
-  }
-  return tileCache[imgKey];
-}
-async function drawMap(){
-  const grass = await tileImg("grass.png");
-  const path = await tileImg("path.png");
-  for (let y=0;y<mapH;y++){
-    for (let x=0;x<mapW;x++){
-      const t = (map[y][x]===1)?path:grass;
-      if (t) ctx.drawImage(t, x*tile, y*tile, tile, tile);
+  // Simple map: water band at top, path band center, grass elsewhere
+  const ts=32;
+  function renderMap(){
+    for(let y=0;y<cv.height;y+=ts){
+      for(let x=0;x<cv.width;x+=ts){
+        let img = tiles.grass;
+        if(y<ts*3) img = tiles.water;
+        else if(y>=ts*5 && y<ts*7) img = tiles.path;
+        ctx.drawImage(img,0,0,ts,ts,x,y,ts,ts);
+      }
     }
   }
-}
 
-pauseBtn.onclick = ()=>{ paused = !paused; pauseBtn.textContent = paused? "Resume":"Pause"; };
-menuBtn.onclick = ()=> panelMenu.classList.toggle('hidden');
-closeMenu.onclick = ()=> panelMenu.classList.add('hidden');
-toggleSandbox.onclick = ()=>{ sandbox = !sandbox; sandboxState.textContent = sandbox? "On":"Off"; };
-mailBtn.onclick = ()=>{
-  panelMail.classList.remove('hidden');
-  lettersDiv.innerHTML = "";
-  letters.forEach((l, i)=>{
-    const el = document.createElement('div');
-    el.className = "letter";
-    el.innerHTML = `<strong>Letter #{i+1}</strong><p>${l.body}</p><button data-i="${i}" class="accept">Accept</button> <button data-i="${i}" class="dismiss">Dismiss</button>`;
-    lettersDiv.appendChild(el);
-  });
-  lettersDiv.onclick = (e)=>{
-    const i = e.target.getAttribute('data-i');
-    if (i==null) return;
-    if (e.target.classList.contains('accept')){ letters.splice(i,1); }
-    if (e.target.classList.contains('dismiss')){ letters.splice(i,1); }
-    mailBadge.textContent = letters.length; mailBtn.click(); mailBtn.click();
-  };
-};
-closeMail.onclick = ()=> panelMail.classList.add('hidden');
+  // Load sprites
+  const sprites = [];
+  for(const s of manifest.sprites){
+    const img = await loadImage(s.file);
+    sprites.push({key:s.key, img});
+  }
+  // Mayor if present
+  const mayor = sprites.find(s=>s.key==='mayor_octavius');
 
-function loop(){ update(); draw(); requestAnimationFrame(loop); }
-requestAnimationFrame(loop);
+  // NPCs: pick a subset of available species_age keys
+  const npcSprites = sprites.filter(s=>/_(child|teen|adult|elder)$/.test(s.key));
+  const npcs = [];
+  const count = Math.min(12, npcSprites.length);
+  const used = new Set();
+  for(let i=0;i<count;i++){
+    let pick; let tries=0;
+    do{ pick = npcSprites[rng(0, npcSprites.length-1)]; tries++; }while(used.has(pick.key) && tries<50);
+    used.add(pick.key);
+    npcs.push({ key: pick.key, img: pick.img, x: rng(2, (cv.width/ts)-3)*ts, y: rng(4, (cv.height/ts)-2)*ts });
+  }
+
+  function drawSheet(img, angleIndex){
+    // Our standardized sheet is 2 rows x 3 cols; use male/front by default
+    const cell=48;
+    const sx = angleIndex*cell, sy = 0; // top row = male
+    ctx.drawImage(img, sx, sy, cell, cell, 0, 0, cell, cell);
+  }
+
+  function render(){
+    renderMap();
+    // Draw NPCs
+    for(const n of npcs){
+      const cell=48;
+      // angleIndex: 0=front,1=back,2=side-right. Pick based on time of day for variety
+      const angle = Math.floor((gameMinutes/10)%3);
+      ctx.drawImage(n.img, angle*cell, 0, cell, cell, n.x, n.y, cell, cell);
+    }
+    // Draw Mayor (center-ish)
+    if(mayor){
+      const cell=48; const angle=0;
+      ctx.drawImage(mayor.img, angle*cell, 0, cell, cell, cv.width/2-24, cv.height/2-24, cell, cell);
+    }
+  }
+
+  // UI
+  function click(){ try{ sfxClick.currentTime=0; sfxClick.play(); }catch(e){} }
+  btnStart.onclick = ()=>{ paused=false; click(); };
+  btnPause.onclick = ()=>{ paused=true; click(); };
+  btnOptions.onclick = ()=>{ alert('Options placeholder — SFX/UI wired.'); click(); };
+
+  requestAnimationFrame(ts=>{ lastTick=ts; tick(ts); });
+})();
